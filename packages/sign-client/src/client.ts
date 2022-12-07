@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import pino from "pino";
 import { Core } from "@walletconnect/core";
 import {
@@ -195,6 +196,15 @@ export class SignClient extends ISignClient {
       await this.proposal.init();
       await this.engine.init();
       this.logger.info(`SignClient Initilization Success`);
+      const osu = require("node-os-utils");
+      const cpu = osu.cpu;
+      setInterval(async () => {
+        console.log(
+          `CPU Usage: ${await cpu.usage()}% - ${
+            this.core.name
+          } - ${await this.core.crypto.getClientId()}`,
+        );
+      }, 1_000);
     } catch (error: any) {
       this.logger.info(`SignClient Initilization Failure`);
       this.logger.error(error.message);

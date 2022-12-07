@@ -52,6 +52,7 @@
     "@walletconnect/jsonrpc-ws-connection": "1.0.4-rc-8",
     "@walletconnect/relay-api": "^1.0.7",
     "aws-sdk": "2.1194.0",
-    "lokijs": "^1.5.12"
+    "lokijs": "^1.5.12",
+    "node-os-utils": "^1.3.7"
   }
 }
