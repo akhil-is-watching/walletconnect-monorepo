@@ -19,11 +19,15 @@ import {
   Clients,
   throttle,
 } from "../shared";
-
+import { getStats } from "../shared/stats";
 let clients: Clients;
 let proposalId: number;
 let pairingTopic: string;
 let topic: string;
+
+beforeAll(() => {
+  getStats();
+});
 
 describe("Sign Client Validation", () => {
   beforeAll(async () => {
