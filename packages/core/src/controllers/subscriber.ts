@@ -251,6 +251,7 @@ export class Subscriber extends ISubscriber {
         );
         await this.relayer.transportClose();
         await this.relayer.transportOpen();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
 
