@@ -93,7 +93,6 @@ export class Subscriber extends ISubscriber {
       const params = { topic, relay };
       this.pending.set(topic, params);
       const id = await this.rpcSubscribe(topic, relay);
-      this.onSubscribe(id, params);
       this.logger.debug(`Successfully Subscribed Topic`);
       this.logger.trace({ type: "method", method: "subscribe", params: { topic, opts } });
       return id;
@@ -240,6 +239,7 @@ export class Subscriber extends ISubscriber {
           Date.now(),
         );
         result = await subscribe;
+        this.onSubscribe(result, { topic, relay });
         this.subscribeInProgress = false;
         console.log("subscribed", clientId, this.relayer.core.name, topic, result);
 
@@ -417,8 +417,7 @@ export class Subscriber extends ISubscriber {
     }
     if (this.subscribeInProgress) return;
     this.pending.forEach(async (params) => {
-      const id = await this.rpcSubscribe(params.topic, params.relay);
-      this.onSubscribe(id, params);
+      await this.rpcSubscribe(params.topic, params.relay);
     });
   }
 
