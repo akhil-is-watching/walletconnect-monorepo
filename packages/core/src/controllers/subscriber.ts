@@ -249,8 +249,6 @@ export class Subscriber extends ISubscriber {
         console.log(
           `subscribe request timeout 5s - ${this.subscribeRetries} - ${clientId} - ${topic} - ${this.relayer.connected} - ${process.env.TEST_RELAY_URL} - ${this.relayer.core.name}`,
         );
-
-        await this.relayer.transportClose();
         await this.relayer.provider.connect();
       }
     }
