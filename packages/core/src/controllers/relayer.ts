@@ -270,5 +270,6 @@ export class Relayer extends IRelayer {
 
   private async ping() {
     await (this.provider.connection as any).ping();
+    console.log("pinged", this.core.name, await this.core.crypto.getClientId());
   }
 }

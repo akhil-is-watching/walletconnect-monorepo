@@ -32,11 +32,11 @@ describe("Sign Client Validation", () => {
     console.log("validation tests - client A", await clients.A.core.crypto.getClientId());
     console.log("validation tests - client B", await clients.B.core.crypto.getClientId());
     console.log("validation tests - clients initialized");
-    await testConnectMethod(clients);
+    const { sessionA, pairingA } = await testConnectMethod(clients);
     console.log("validation tests - clients paired");
-    pairingTopic = clients.A.pairing.keys[0];
+    pairingTopic = pairingA.topic;
     proposalId = clients.A.proposal.keys[0];
-    topic = clients.A.session.keys[0];
+    topic = sessionA.topic;
   });
 
   afterAll(async () => {
