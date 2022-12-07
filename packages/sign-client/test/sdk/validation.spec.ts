@@ -19,7 +19,6 @@ import {
   Clients,
   throttle,
 } from "../shared";
-import SignClient from "../../src";
 
 let clients: Clients;
 let proposalId: number;

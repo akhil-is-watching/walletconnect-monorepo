@@ -42,6 +42,7 @@ export class Subscriber extends ISubscriber {
   private pendingSubInterval = 20;
   private storagePrefix = CORE_STORAGE_PREFIX;
   private subscribeRetries = 0;
+  private subscribeInProgress = false;
   constructor(public relayer: IRelayer, public logger: Logger) {
     super(relayer, logger);
     this.relayer = relayer;
@@ -200,6 +201,7 @@ export class Subscriber extends ISubscriber {
   }
 
   private async rpcSubscribe(topic: string, relay: RelayerTypes.ProtocolOptions) {
+    this.subscribeInProgress = true;
     const api = getRelayProtocolApi(relay.protocol);
     const request: RequestArguments<RelayJsonRpc.SubscribeParams> = {
       method: api.subscribe,
@@ -238,6 +240,7 @@ export class Subscriber extends ISubscriber {
           Date.now(),
         );
         result = await subscribe;
+        this.subscribeInProgress = false;
         console.log("subscribed", clientId, this.relayer.core.name, topic, result);
 
         break;
@@ -413,6 +416,7 @@ export class Subscriber extends ISubscriber {
     if (this.relayer.transportExplicitlyClosed) {
       return;
     }
+    if (this.subscribeInProgress) return;
     this.pending.forEach(async (params) => {
       const id = await this.rpcSubscribe(params.topic, params.relay);
       this.onSubscribe(id, params);
