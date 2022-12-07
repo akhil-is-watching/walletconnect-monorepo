@@ -209,8 +209,12 @@ export class Subscriber extends ISubscriber {
     };
     this.logger.debug(`Outgoing Relay Payload`);
     this.logger.trace({ type: "payload", direction: "outgoing", request });
-    const clientId = await this.relayer.core.crypto.getClientId();
 
+    if (!this.relayer.connected) {
+      await this.relayer.provider.connect();
+    }
+
+    const clientId = await this.relayer.core.crypto.getClientId();
     const subscribe = new Promise(async (resolve, reject) => {
       const timeout = setTimeout(() => {
         this.subscribeRetries++;
@@ -244,7 +248,7 @@ export class Subscriber extends ISubscriber {
         );
 
         await this.relayer.transportClose();
-        await this.relayer.transportOpen();
+        await this.relayer.provider.connect();
       }
     }
 
