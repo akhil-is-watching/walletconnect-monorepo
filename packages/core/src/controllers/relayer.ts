@@ -86,6 +86,7 @@ export class Relayer extends IRelayer {
     this.provider = await this.createProvider();
     await Promise.all([this.messages.init(), this.provider.connect(), this.subscriber.init()]);
     this.registerEventListeners();
+    await (this.provider.connection as any).ping();
     this.initialized = true;
   }
 
