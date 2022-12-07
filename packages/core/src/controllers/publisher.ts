@@ -86,8 +86,7 @@ export class Publisher extends IPublisher {
             `subscribe request timeout 5s - ${this.publishRetries} - ${clientId} - ${topic} - ${this.relayer.connected} - ${process.env.TEST_RELAY_URL} - ${this.relayer.core.name}`,
           );
           await this.relayer.transportClose();
-          this.relayer.transportExplicitlyClosed = false;
-          await this.relayer.provider.connect();
+          await this.relayer.transportOpen();
           /*
            *  create an array to store pending requests
            *  check for duplicate requests

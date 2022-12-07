@@ -250,8 +250,7 @@ export class Subscriber extends ISubscriber {
           `subscribe request timeout 5s - ${this.subscribeRetries} - ${clientId} - ${topic} - ${this.relayer.connected} - ${process.env.TEST_RELAY_URL} - ${this.relayer.core.name}`,
         );
         await this.relayer.transportClose();
-        this.relayer.transportExplicitlyClosed = false;
-        await this.relayer.provider.connect();
+        await this.relayer.transportOpen();
       }
     }
 

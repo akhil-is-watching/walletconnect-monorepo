@@ -86,7 +86,7 @@ export class Relayer extends IRelayer {
     this.provider = await this.createProvider();
     await Promise.all([this.messages.init(), this.provider.connect(), this.subscriber.init()]);
     this.registerEventListeners();
-    await (this.provider.connection as any).ping();
+    await this.ping();
     this.initialized = true;
   }
 
@@ -146,6 +146,7 @@ export class Relayer extends IRelayer {
 
     this.transportExplicitlyClosed = false;
     await this.provider.connect();
+    await this.ping();
     // wait for the subscriber to finish resubscribing to its topics
     await new Promise<void>((resolve) => {
       this.subscriber.once(SUBSCRIBER_EVENTS.resubscribed, () => {
@@ -265,5 +266,9 @@ export class Relayer extends IRelayer {
       const { message } = getInternalError("NOT_INITIALIZED", this.name);
       throw new Error(message);
     }
+  }
+
+  private async ping() {
+    await (this.provider.connection as any).ping();
   }
 }
