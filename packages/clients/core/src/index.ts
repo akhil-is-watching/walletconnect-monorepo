@@ -68,7 +68,7 @@ import { getBridgeUrl } from "./url";
 // -- Connector ------------------------------------------------------------ //
 
 class Connector implements IConnector {
-  public readonly protocol = "wc";
+  public readonly protocol = "pc";
   public readonly version = 1;
 
   // -- connection ----------------------------------------------------- //
@@ -621,6 +621,20 @@ class Connector implements IConnector {
     const request = this._formatRequest({
       method: "eth_sendTransaction",
       params: [parsedTx],
+    });
+
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+
+  public async sendTransactionToPlena(tx: any) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+
+    const request = this._formatRequest({
+      method: "eth_sendTransaction",
+      params: [tx],
     });
 
     const result = await this._sendCallRequest(request);
